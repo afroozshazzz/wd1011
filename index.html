@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Registration Form</title>
+    </head>
+    <body>
+        <h1>Registration Form</h1>
+        <form id="registration-form">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="dob">Dob</label>
+            <input type="dob" id="dob" name="dob" required>
+
+            <label for="terms">Accepted terms?</label>
+            <input type="checkbox" id="terms" name="terms" required>
+
+            <button type="submit">Submit</button>
+        </form>
+        <table id="registration-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Dob</th>
+                    <th>Accepted terms?</th>
+                </tr>
+            </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <script>
+        // load data from web storage
+        if(localStorage.getItem('registrationData')) {
+            document.querySelector('registration-table tbody').innerHTML = localStorage.getItem('registrationData');
+        }
+
+        // Add event listener to the form
+        document.querySelector('registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get from data
+            const name = document.querySelector('#name').value;
+            const email = document.querySelector('#email').value;
+            const password= document.querySelector('#password').value;
+            const dob = document.querySelector('#dob').value;
+            const terms = document.querySelector('#terms').checked;
+
+            // Validate dob
+            const currentDate = new Date();
+            const dobDate = new Date(dob);
+            const diff = currentDate.getFullYear() - dobDate.getFullYear();
+            if(diff < 18 || diff > 55) {
+                alert('you must be between 18 and 55 years old.');
+                return;
+            }
+            
+            //validate email
+            const emailRegex = /^\S+@\S+\.\S+$/;
+            if(!emailRegex.test(email)) {
+                alert('Invalid email address.');
+                return;
+            }
+
+            // Add data to table
+            const newRow = `<tr>
+                               <td>${name}</td>
+                               <td>${email}</td>
+                               <td>${password}</td>
+                               <td>${dob}</td>
+                               <td>${terms}</td>
+                            </tr>`;
+                            document.querySelector('#registration-table tbody').innerHTML +=newRow;
+
+                            // Save data to web Storage
+                            localStorage.setItem('registrationData', document.querySelector('#registration-table tbody').innerHTML);
+                        });
+                        </script>
+    </body>
+</html>
+
