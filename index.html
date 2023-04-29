@@ -17,13 +17,15 @@
             <input type="password" id="password" name="password" required>
 
             <label for="dob">Dob</label>
-            <input type="dob" id="dob" name="dob" required>
+            <input type="date" id="dob" name="dob" required>
 
             <label for="terms">Accepted terms?</label>
             <input type="checkbox" id="terms" name="terms" required>
 
             <button type="submit">Submit</button>
         </form>
+        
+        
         <table id="registration-table">
             <thead>
                 <tr>
@@ -39,13 +41,13 @@
     </table>
     
     <script>
-        // load data from web storage
+        // Load data from web storage
         if(localStorage.getItem('registrationData')) {
-            document.querySelector('registration-table tbody').innerHTML = localStorage.getItem('registrationData');
+            document.querySelector('#registration-table tbody').innerHTML = localStorage.getItem('registrationData');
         }
 
         // Add event listener to the form
-        document.querySelector('registration-form').addEventListener('submit', function(e) {
+        document.querySelector('#registration-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
             // Get from data
@@ -59,12 +61,13 @@
             const currentDate = new Date();
             const dobDate = new Date(dob);
             const diff = currentDate.getFullYear() - dobDate.getFullYear();
-            if(diff < 18 || diff > 55) {
+            
+             if(diff < 18 || diff > 55) {
                 alert('you must be between 18 and 55 years old.');
                 return;
             }
             
-            //validate email
+            // Validate email
             const emailRegex = /^\S+@\S+\.\S+$/;
             if(!emailRegex.test(email)) {
                 alert('Invalid email address.');
@@ -79,7 +82,7 @@
                                <td>${dob}</td>
                                <td>${terms}</td>
                             </tr>`;
-                            document.querySelector('#registration-table tbody').innerHTML +=newRow;
+                            document.querySelector('#registration-table tbody').innerHTML += newRow;
 
                             // Save data to web Storage
                             localStorage.setItem('registrationData', document.querySelector('#registration-table tbody').innerHTML);
